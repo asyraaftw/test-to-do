@@ -1,7 +1,7 @@
+using Backend.Data;
+using Backend.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Backend.Model;
-using Backend.Data;
 
 namespace Backend.Controller
 {
@@ -16,14 +16,12 @@ namespace Backend.Controller
             _context = context;
         }
 
-        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Backend.Model.Task>>> GetTasks()
         {
             return await _context.Tasks.ToListAsync();
         }
 
-        
         [HttpGet("{id}")]
         public async Task<ActionResult<Backend.Model.Task>> GetTask(Guid id)
         {
@@ -37,18 +35,16 @@ namespace Backend.Controller
             return task;
         }
 
-        
         [HttpPost]
         public async Task<ActionResult<Backend.Model.Task>> CreateTask(Backend.Model.Task task)
         {
-            task.createdTs = DateTime.UtcNow; 
+            task.createdTs = DateTime.UtcNow;
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetTask), new { id = task.id }, task);
         }
 
-        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(Guid id, Backend.Model.Task task)
         {
@@ -78,7 +74,6 @@ namespace Backend.Controller
             return NoContent();
         }
 
-        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(Guid id)
         {
@@ -108,15 +103,14 @@ namespace Backend.Controller
         [HttpGet("existTask/{id}")]
         public IActionResult CheckTaskExistence(Guid id)
         {
-        var taskExists = _context.Tasks.Any(t => t.id == id);
-        var response = new ApiResponse
-        {
-            Success = taskExists,
-                Message = taskExists ? "Task found." : "Task not found."
+            var taskExists = _context.Tasks.Any(t => t.id == id);
+            var response = new ApiResponse
+            {
+                Success = taskExists,
+                Message = taskExists ? "Task found." : "Task not found.",
             };
 
             return Ok(response);
         }
-
     }
 }

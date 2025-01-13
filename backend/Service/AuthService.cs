@@ -1,13 +1,13 @@
-// /Services/AuthService.cs
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Backend.Data;
+using Backend.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using System.Security.Claims;
-using Backend.Data;  // Reference your DbContext
-using Backend.Model;  // Reference your User model
 
 namespace Backend.Service;
+
 public interface IAuthService
 {
     string Authenticate(string email, string password);
@@ -29,7 +29,7 @@ public class AuthService : IAuthService
         var user = _context.Users.FirstOrDefault(u => u.email == email);
         if (user == null || !VerifyPasswordHash(password, user.password))
         {
-            return null;  // Authentication failed
+            return null;
         }
 
         return GenerateJwtToken(user);
@@ -37,12 +37,14 @@ public class AuthService : IAuthService
 
     private bool VerifyPasswordHash(string password, string storedHash)
     {
-        return password == storedHash;  // Simplified for demonstration
+        return password == storedHash;
     }
 
     private string GenerateJwtToken(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+        var securityKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"])
+        );
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]

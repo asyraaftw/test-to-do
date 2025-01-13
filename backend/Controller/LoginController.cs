@@ -18,7 +18,11 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
+            if (
+                loginRequest == null
+                || string.IsNullOrEmpty(loginRequest.Email)
+                || string.IsNullOrEmpty(loginRequest.Password)
+            )
             {
                 return BadRequest("Invalid request.");
             }

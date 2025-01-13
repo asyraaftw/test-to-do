@@ -1,0 +1,51 @@
+node_modules
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]ebug-AnyCPU/
+[Dd]ebug-x86/
+[Dd]ebug-x64/
+[Dd]Release/
+[Dd]eploy/
+bin/
+obj/
+
+# ASP.NET
+wwwroot/
+**/bin/
+**/obj/
+
+# User-specific files for Visual Studio for Mac
+.vscode/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer package
+*.zip
+
+# .NET Core files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET global tool
+dotnet-tools.json
+
+# JetBrains Rider
+.idea/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
