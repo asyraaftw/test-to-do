@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controller;
 
+// Default
 [ApiController]
-[Route("api/[controller]")]
+[Route("api")]
 public class ExampleController : ControllerBase
 {
-    [HttpGet("hello")]
-    public string GetHello()
+    public string Index()
     {
         return "Hello, world!";
     }
