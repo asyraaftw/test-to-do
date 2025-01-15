@@ -1,4 +1,12 @@
-# Small Project (dotnet + reactjs + pgsql)
+# Small Project
+
+## Description
+
+- be : `dotnet`
+- fe : `reactjs + mui`
+- db : `pgsql`
+- styling : `mui`
+- version control : `github`
 
 ### Version
 
