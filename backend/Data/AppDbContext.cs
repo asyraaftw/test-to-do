@@ -10,11 +10,13 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Backend.Model.Task> Tasks { get; set; }
+    public DbSet<Book> Books { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<User>().ToTable("user", "public");
         modelBuilder.Entity<Backend.Model.Task>().ToTable("task", "public");
+        modelBuilder.Entity<Book>().ToTable("book", "public");
     }
 }
