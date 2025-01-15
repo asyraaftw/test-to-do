@@ -1,5 +1,5 @@
+import { Box } from "@mui/material";
 import React from "react";
-import { Box, BoxProps, useTheme, useThemeProps } from "@mui/material";
 
 // interface ContentWrapperProps extends BoxProps {
 //   maxWidth?: number | string; // Allows setting a custom max width

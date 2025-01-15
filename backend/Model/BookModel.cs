@@ -10,6 +10,7 @@ namespace Backend.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // uuidv4
         public Guid id { get; set; }
+
         [Required]
         [MaxLength(255)]
         public required string title { get; set; }

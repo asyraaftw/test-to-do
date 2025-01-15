@@ -9,10 +9,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React, { useEffect, useState } from "react";
-import { deleteBook, getBook, getBookByID, getHello } from "./Api/Api"; // Adjust the path to where your getHello function is located
+import { deleteBook, getBook, getBookByID, getHello } from "./Api/Api";
 import { BasicNavigationBar } from "./component/BasicNavigationBar";
 import { SimpleDialog } from "./component/SimpleDialog";
-import { ContentWrapper } from "./component/ContentWrapper";
 
 export const Home = () => {
   const [hello, setHello] = useState("");
@@ -22,12 +21,6 @@ export const Home = () => {
   const [bookByID, setBookByID] = useState([]);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [closeDialog, setCloseDialog] = useState(false);
-  const [currentData, setCurrentData] = useState([]);
-
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -55,7 +48,6 @@ export const Home = () => {
   };
 
   const handleUpdate = async (id) => {
-    console.log("Update item with ID:", id);
     if (id) {
       try {
         setCurrentID(id);
@@ -70,11 +62,10 @@ export const Home = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log("Delete item with ID:", id);
     if (id) {
       try {
-        await deleteBook(id); // Ensure deleteBook is a promise
-        await fetchData(); // Refetch updated data
+        await deleteBook(id);
+        await fetchData();
       } catch (err) {
         setError("Failed to delete the book");
         console.error(err);

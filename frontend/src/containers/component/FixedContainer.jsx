@@ -1,9 +1,7 @@
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import * as React from "react";
 import TextField from "@mui/material/TextField";
-import { SimpleDialog } from "./SimpleDialog";
+import * as React from "react";
 
 export const FixedContainer = () => {
   return (
@@ -14,11 +12,5 @@ export const FixedContainer = () => {
         {/* <Box sx={{ bgcolor: "#A9A9A9", height: "100vh" }} /> */}
       </Container>
     </React.Fragment>
-    // <React.Fragment>
-    //   <CssBaseline />
-    //   <Container fixed>
-    //     <Box sx={{ bgcolor: "#cfe8fc", height: "100vh" }} />
-    //   </Container>
-    // </React.Fragment>
   );
 };

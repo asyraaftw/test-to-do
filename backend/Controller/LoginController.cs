@@ -27,7 +27,7 @@ namespace Backend.Controllers
                 return BadRequest("Invalid request.");
             }
 
-            // Validate user and generate token
+            // Token
             var token = _authService.Authenticate(loginRequest.Email, loginRequest.Password);
 
             if (token == null)
