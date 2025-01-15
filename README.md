@@ -1,4 +1,4 @@
-# Small Project
+# Small Project (dotnet + reactjs + pgsql)
 
 ### Version
 
