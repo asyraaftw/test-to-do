@@ -6,27 +6,57 @@ import {
   ListItemText,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
-import { createBook } from "../Api/Api";
+import React, { useState, useEffect } from "react";
+import { createBook, updateBook } from "../Api/Api";
 
 export const SimpleDialog = (props) => {
-  const { onClose, selectedValue, open, value, id, mode } = props;
+  const {
+    onClose,
+    selectedValue,
+    open,
+    value,
+    id,
+    mode,
+    currentData,
+    fetchData,
+  } = props;
+
   const [bookData, setBookData] = useState({
     title: "",
     rating: "",
   });
-  console.log(id, mode);
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    if (currentData) {
+      setBookData({
+        id: currentData.id || "",
+        title: currentData.title || "",
+        rating: currentData.rating || "",
+      });
+    }
+  }, [currentData]);
+
+  const handleSubmit = async () => {
     console.log("Book Title:", bookData.title);
     console.log("Rating:", bookData.rating);
-    createBook(bookData);
+    console.log("Mode:", mode);
+    if (mode === "Add") {
+      await createBook(bookData);
+    } else {
+      await updateBook(id, bookData);
+    }
+
+    if (fetchData) {
+      await fetchData();
+    }
+    onClose();
   };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setBookData((prevData) => ({
       ...prevData,
-      [name]: value, // Update the specific field (bookTitle or rating)
+      [name]: value,
     }));
   };
 
@@ -36,10 +66,12 @@ export const SimpleDialog = (props) => {
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Book List</DialogTitle>
+      <DialogTitle>
+        {mode === "Update" ? "Update Book" : "Add Book"}
+      </DialogTitle>
       <ListItem key={value}>
         <TextField
-          id="standard-basic"
+          id="title"
           label="Title"
           name="title"
           variant="standard"
@@ -49,12 +81,16 @@ export const SimpleDialog = (props) => {
       </ListItem>
       <ListItem key={value}>
         <TextField
-          id="standard-basic"
+          id="rating"
           label="Rating"
           name="rating"
           variant="standard"
           value={bookData?.rating}
           onChange={handleChange}
+          inputProps={{
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+          }}
         />
       </ListItem>
       <ListItem disablePadding>

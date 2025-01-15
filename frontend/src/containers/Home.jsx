@@ -9,15 +9,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React, { useEffect, useState } from "react";
-import { deleteBook, getBook, getHello } from "./Api/Api"; // Adjust the path to where your getHello function is located
+import { deleteBook, getBook, getBookByID, getHello } from "./Api/Api"; // Adjust the path to where your getHello function is located
 import { BasicNavigationBar } from "./component/BasicNavigationBar";
 import { SimpleDialog } from "./component/SimpleDialog";
+import { ContentWrapper } from "./component/ContentWrapper";
 
 export const Home = () => {
   const [hello, setHello] = useState("");
   const [currentID, setCurrentID] = useState("");
   const [currentMode, setCurrentMode] = useState("");
-  const [currentBook, setBook] = useState([]);
+  const [allBook, setAllBook] = useState([]);
+  const [bookByID, setBookByID] = useState([]);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [closeDialog, setCloseDialog] = useState(false);
@@ -31,32 +33,53 @@ export const Home = () => {
     setOpenDialog(false);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const helloData = await getHello();
-        const bookData = await getBook();
-        setBook(bookData);
-        setHello(helloData);
-      } catch (err) {
-        setError("Failed to fetch data");
-        console.error(err);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const helloData = await getHello();
+      const bookData = await getBook();
+      setAllBook(bookData);
+      setHello(helloData);
+    } catch (err) {
+      setError("Failed to fetch data");
+      console.error(err);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
-  const handleUpdate = (id) => {
-    console.log("Update item with ID:", id);
-    setCurrentMode("Update");
-    setCurrentID(id);
-    setOpenDialog(true);
+  const fetchBookByID = async (id) => {
+    const dataBookByID = await getBookByID(id);
+    setBookByID(dataBookByID);
   };
 
-  const handleDelete = (id) => {
+  const handleUpdate = async (id) => {
+    console.log("Update item with ID:", id);
+    if (id) {
+      try {
+        setCurrentID(id);
+        fetchBookByID(id);
+        setCurrentMode("Update");
+        setOpenDialog(true);
+      } catch (err) {
+        setError("Failed to delete the book");
+        console.error(err);
+      }
+    }
+  };
+
+  const handleDelete = async (id) => {
     console.log("Delete item with ID:", id);
-    deleteBook(id);
+    if (id) {
+      try {
+        await deleteBook(id); // Ensure deleteBook is a promise
+        await fetchData(); // Refetch updated data
+      } catch (err) {
+        setError("Failed to delete the book");
+        console.error(err);
+      }
+    }
   };
 
   return (
@@ -73,14 +96,14 @@ export const Home = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
+                <TableCell>#</TableCell>
                 <TableCell align="right">Title</TableCell>
                 <TableCell align="right">Rating</TableCell>
                 <TableCell align="right">Mods</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {currentBook?.map((x, k) => (
+              {allBook?.map((x, k) => (
                 <TableRow key={k}>
                   <TableCell component="th" scope="row">
                     {k + 1}
@@ -106,13 +129,14 @@ export const Home = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* <TextField id="standard-basic" label="Standard" variant="standard" /> */}
       </div>
       <SimpleDialog
         open={openDialog}
         onClose={handleCloseDialog}
         mode={currentMode}
         id={currentID}
+        currentData={bookByID}
+        fetchData={fetchData}
       />
     </>
   );

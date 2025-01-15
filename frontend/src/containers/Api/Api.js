@@ -19,10 +19,15 @@ export const getBook = async () => {
   return response.data;
 };
 
+export const getBookByID = async (id) => {
+  const response = await axios.get(`${API_URL}book/${id}`);
+  return response.data;
+};
+
 export const createBook = async (book) => {
   try {
     const response = await axios.post(`${API_URL}book`, book);
-    console.log("Book created:", response.data);
+    return response.data;
   } catch (error) {
     console.error("There was an error creating the book:", error);
   }
